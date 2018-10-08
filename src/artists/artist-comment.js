@@ -1,8 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 
-import { Actions } from 'react-native-router-flux';
-
 export default function ArtistCommentList (props) {
     return (
         <View style={ styles.container }>

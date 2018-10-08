@@ -10,12 +10,14 @@ import { firebaseDB, firebaseAuth} from '../APIs/firebase-client'
 export default class ArtistProfile extends Component{
   state = {
     comments: [],
-    changedText: false
+    changedText: false,
+    commentCount: 0
   }
 
   componentDidMount() {
     this.getArtistCommentsRef().on('child_added', this.addComment)
   }
+
 
   componentWillUnmount() {
     this.getArtistCommentsRef().off('child_added', this.addComment)
@@ -29,9 +31,27 @@ export default class ArtistProfile extends Component{
       })
   }
 
+  postComment = () => {
+    this.getArtistRef().transaction( (artist) => {
+       if (artist) { 
+          if (artist.commentCount) {
+              artist.commentCount++;
+          } else {
+            if (artist.likeCount) {
+              artist.commentCount= 1
+            }
+          }
+        }
+        return artist || {
+                commentCount: 1
+              }
+        })
+}
+
   handleSend = () => {
     const { text } = this.state
     const { uid, photoURL } = firebaseAuth.currentUser
+    this.postComment()
     const artistCommentRef = this.getArtistCommentsRef()
     const newCommentRef = artistCommentRef.push();
     newCommentRef.set({
@@ -52,6 +72,11 @@ export default class ArtistProfile extends Component{
      })
   }
   
+  getArtistRef = () => {
+    const { id } = this.props.artist
+    return firebaseDB.ref(`artist/${ id }`)
+  }
+
   getArtistCommentsRef = () => {
     const { id } = this.props.artist
     return firebaseDB.ref(`comments/${ id }`)

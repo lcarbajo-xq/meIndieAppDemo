@@ -8,7 +8,8 @@ import { firebaseDB, firebaseAuth } from '../APIs/firebase-client'
 export default class ArtistBox extends Component {
     state = {
         liked: false,
-        likeCount: 0
+        likeCount: 0,
+        commentCount: 0
     }
 
     componentWillMount() {
@@ -17,10 +18,12 @@ export default class ArtistBox extends Component {
             const artist = snapshot.val()
             if (artist)
                 this.setState({
-                    likeCount: artist.likeCount,
+                    commentCount: artist.commentCount ? artist.commentCount : 0,
+                    likeCount: artist.likeCount ? artist.likeCount : 0,
                     liked: artist.likes && artist.likes[uid]
                 })
         })
+        
     }
 
     handlePress = () => {
@@ -29,25 +32,44 @@ export default class ArtistBox extends Component {
 
     getArtistRef = () => {
         const { id } = this.props.artist
-        return firebaseDB.ref(`artst/${ id }`)
+        return firebaseDB.ref(`artist/${ id }`)
     }
+    getArtistCommentsRef = () => {
+        const { id } = this.props.artist
+        return firebaseDB.ref(`comments/${ id }`)
+      }
 
     postLike = () => {
         const { uid } = firebaseAuth.currentUser
         this.getArtistRef().transaction( function(artist) {
             if (artist) {
-              if (artist.likes && artist.likes[uid]) {
-                artist.likeCount--;
-                artist.likes[uid] = null;
-              } else {
-                artist.likeCount++;
-                if (!artist.likes) {
-                  artist.likes = {};
+                if (artist.commentCount) {
+                    if (artist.likes && artist.likes[uid]) {
+                        artist.likeCount--;
+                        artist.likes[uid] = null;
+                    }
+                    else {
+                        artist.likeCount ? artist.likeCount++ : artist.likeCount = 1 ;
+                        if (!artist.likes) {
+                            artist.likes = {};
+                          }
+                        artist.likes[uid] = true;
+                    }
+                } else {
+                    if (artist.likes && artist.likes[uid]) {
+                        artist.likeCount--;
+                        artist.likes[uid] = null;
+                    }
+                    else {
+                        artist.likeCount++;
+                        if (!artist.likes) {
+                            artist.likes = {};
+                          }
+                        artist.likes[uid] = true;
+                    }
                 }
-                artist.likes[uid] = true;
-              }
             }
-            return artist || {
+            return artist || {
                 likeCount: 1,
                 likes: {
                     [uid] : true
@@ -78,7 +100,7 @@ export default class ArtistBox extends Component {
                     </View >
                     <View style={ styles.socialInfo }>
                         <Icon name="comment-multiple-outline" size={ 25 } color='#596275'/>
-                        <Text style={ styles.socialNum }>{ comments }</Text>
+                        <Text style={ styles.socialNum }>{ this.state.commentCount }</Text>
                     </View>
                     </View>
                 </View>

@@ -14,8 +14,6 @@ class Api {
                 id: artist.mbid,
                 name: artist.name,
                 image: artist.image[2]['#text'],
-                likes: '142',
-                comments: '31'
             }))
         return artist;
     }
