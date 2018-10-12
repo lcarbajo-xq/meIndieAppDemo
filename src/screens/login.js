@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, Text, ImageBackground, Image } from 'react-native';
+import { StyleSheet, Text, ImageBackground, Image } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
 
@@ -19,6 +19,10 @@ export default class Login extends Component{
     this.authenticateUser();
   }
 
+  componentDidUpdate(){
+    Actions.userProfile();
+  }
+
   authenticateUser = () => {
 
     AccessToken.getCurrentAccessToken().then( (data) => {
@@ -27,10 +31,8 @@ export default class Login extends Component{
       const credential = FacebookAuthProvider.credential(accessToken);
       firebaseAuth.signInAndRetrieveDataWithCredential(credential).then( (userCredentials) => {
         this.setState({
-          userCredentials
+          userCredentials: userCredentials.user
         })
-      Actions.home();
-      const currentUser = userCredentials;
       }).catch( (error) => {
         console.log("Sign In Error", error);
       });
@@ -42,7 +44,8 @@ export default class Login extends Component{
       } else if (result.isCancelled) {
         console.log("login is cancelled.");
       } else {
-          this.authenticateUser()
+        this.authenticateUser()
+        Actions.userProfile();
       }
   }
   handleLogOut = () => {
@@ -51,10 +54,11 @@ export default class Login extends Component{
     })
   }
   render() {
+
     return (
         <ImageBackground source={ require ('../../assets/login-background.jpg')} style={ styles.container }>
           <Image source={ require ('../../assets/app-logo.png')} style={ styles.logo }/>
-          <Text style= { styles.welcome }>Welcome, MeIndieUser</Text>
+          <Text style= { styles.welcome }>{`Wekcome`}</Text>
           <Text style={ styles.credentials }>{ this.state.userCredentials && this.state.userCredentials.displayName }</Text>
           <LoginButton 
             style={ styles.button }
@@ -83,17 +87,17 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 30,
     color: 'white',
-    fontFamily: 'System'
+    fontFamily: 'System',
+    backgroundColor:  '#535c68'
   },
   credentials:  {
     fontSize: 20,
     fontWeight: 'bold',
-    backgroundColor: 'red',
+    backgroundColor: '#535c68',
     marginTop: 15
   },
   button:  {
     width: 100,
-    height: 40,
-    backgroundColor: 'yellow'
+    height: 40
   }
 });

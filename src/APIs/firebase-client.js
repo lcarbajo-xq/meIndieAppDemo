@@ -5,7 +5,7 @@ import '@firebase/database'
 const config = {
     apiKey: "AIzaSyDiFBbKlRpNrVFeZev302Z3ly934JTlvMo",
     authDomain: "meindieapp.firebaseapp.com",
-    databaseURL: "https://meindieapp.firebaseio.com",
+    databaseURL: "http://meindieapp.firebaseio.com",
     projectId: "meindieapp",
     storageBucket: "",
     messagingSenderId: "763749738089"
