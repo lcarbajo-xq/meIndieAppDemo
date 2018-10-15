@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, ImageBackground, Image } from 'react-native';
+import { StyleSheet, Text, ImageBackground, Image, StatusBar } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
 
@@ -19,8 +19,21 @@ export default class Login extends Component{
     this.authenticateUser();
   }
 
+  componentDidMount() {
+    this.focus = this.props.navigation.addListener('didFocus', () => {
+      StatusBar.setBarStyle('light-content');
+    })
+    this.props.navigation.navigate('Home')
+  }
+
+  componentWillUnmount() {
+    this.focus.remove();
+  }
+
   componentDidUpdate(){
-    Actions.userProfile();
+    this.props.navigation.navigate('Home', {
+      userName: this.state.userCredentials.displayName
+    })
   }
 
   authenticateUser = () => {
@@ -45,7 +58,9 @@ export default class Login extends Component{
         console.log("login is cancelled.");
       } else {
         this.authenticateUser()
-        Actions.userProfile();
+        this.state.userCredentials && this.props.navigation.navigate('Home', {
+          userName: this.state.userCredentials.displayName
+        });
       }
   }
   handleLogOut = () => {

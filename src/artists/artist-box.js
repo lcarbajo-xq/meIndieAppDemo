@@ -79,7 +79,7 @@ export default class ArtistBox extends Component {
     }
 
     render(){
-        const { image, name, likes, comments } = this.props.artist
+        const { image, name } = this.props.artist
         const likedIcon = this.state.liked ?
             <Icon name="thumb-up" size={ 25 } color='#e84118' /> :
             <Icon name="thumb-up-outline" size={ 25 } color='#596275' />

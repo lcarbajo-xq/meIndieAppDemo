@@ -49,3 +49,22 @@ const styles = StyleSheet.create({
   
   // # Fluidez relativa de un elemento:
   // flex: number (el. 1, 0.5, 5)
+
+
+
+
+ {/* activeBackgroundColor='red'
+                key="userProfile" 
+                component={ UserProfile }              
+                navigationBarStyle={ styles.navBarProfile }
+                hideNavBar={ false } color='#aaa69d'>  */}
+                <Scene key="tab1" title='news' component={ Home } icon={ TabIcon }/>
+        </Scene>
+          {/* <Scene key="appLogin" component={ Login } hideNavBar/>
+          <Scene key="home" component={ Home } hideNavBar/>
+          <Scene key="artistProfile" 
+                 component={ ArtistProfile } 
+                 title="Comments" 
+                 navigationBarStyle={ styles.navBar }
+                 hideNavBar={ false } color='#aaa69d'/>
+        </Scene> */}
