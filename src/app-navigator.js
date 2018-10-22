@@ -7,7 +7,10 @@ import IconBadge from 'react-native-icon-badge';
 import Home from './screens/home';
 import Login from './screens/login';
 import ArtistProfile from './screens/artist-profile';
-import UserProfile from './screens/user-profile';
+import UserProfile from './screens/user-new-event';
+import EventsFeed from './screens/user-events'
+import EventBox from './events/event-box'
+import ShowImage from './screens/show-image'
 import Searcher  from './Utils/searcher'
 
 
@@ -63,17 +66,28 @@ const AppTabNavigator = createBottomTabNavigator ({
 
 const AppStackNavigator = createStackNavigator({
         Login: {
-            screen: Login, 
+            screen: EventsFeed, 
         },
         Home: {
-            screen: AppTabNavigator
+            screen: UserProfile
         },  
     },
     {
         initialRouteKey: Login,
         navigationOptions: {
-            header: Searcher,
-            headerTintColor: '#2e86de',
+            headerStyle: {
+                backgroundColor: '#ff7f50',
+            },
+            headerTitleStyle: {
+                fontFamily: 'System',
+                fontWeight: '600',
+                color: 'white',
+                fontSize: 20
+            },
+            title: 'Create an Event',
+            // header: Searcher,
+            // headerTitle: 'Create an Event',
+            // headerTintColor: '#079992',
         },
     });
 

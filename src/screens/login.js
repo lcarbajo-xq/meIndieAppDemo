@@ -15,25 +15,15 @@ export default class Login extends Component{
     userCredentials: null
   }
 
-  componentWillMount(){
-    this.authenticateUser();
-  }
-
   componentDidMount() {
     this.focus = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
     })
-    this.props.navigation.navigate('Home')
+    this.authenticateUser();
   }
 
   componentWillUnmount() {
     this.focus.remove();
-  }
-
-  componentDidUpdate(){
-    this.props.navigation.navigate('Home', {
-      userName: this.state.userCredentials.displayName
-    })
   }
 
   authenticateUser = () => {
