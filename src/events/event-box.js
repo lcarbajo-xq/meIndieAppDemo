@@ -30,52 +30,39 @@ export default class ArtistBox extends Component {
         const { eventTitle, eventDescription, eventDate, eventPlace, eventImageUri } = this.props.event
         const { user, userImage } = this.props
         return (
-                <View style= { styles.eventBox }>
-                    <View style= { styles.eventImageContainer }>
-                        <Image style={ { width: 400, height: 200, zIndex: 990 } } source={ require ('../../assets/portada-default.jpg')}/>
-                        <View style={ styles.eventInfoContainer }>
-                            <Text style={ styles.eventTexts }> Titulo del Evento</Text>
-                            <Text style={ styles.eventTexts }> Descripcion</Text>
-                            <Text style={ styles.eventTexts }> Lugar </Text>
+            <View style={ styles.eventBox }>
+                <ImageBackground style={ styles.eventImage } source={ eventImageUri && { uri: eventImageUri}}>
+                    <LinearGradient colors={['transparent', 'black']} style={styles.linearGradient}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={ styles.eventDate }>
+                                <Text style={{ color: 'white', fontSize: 21 }}>18</Text>
+                                <Text style={{ color: 'orange', fontSiez: 14 }}>NOV</Text>
+                            </View>
+                            <View style={ styles.eventInfo }>
+                                <Text style={ styles.eventTitle }>{eventTitle ? eventTitle : 'Event Tittle'}</Text>
+                                <Text style={ styles.eventTitle }>{ eventDescription ? eventDescription : 'Event Type'}</Text>
+                            </View>
                         </View>
-                    </View>
-                    <View style= {styles.eventCreator }>
-                        <Image style= { styles.eventCreatorImage } source={ require('../../assets/user-profile-default.jpg') }/>
-                        <View>
-                            <Text> Created by</Text>
-                            <Text> { user }</Text>
-                        </View>
-                        <Text> Fecha del Evento </Text>
-                    </View>
-                    <View style={ styles.container2 }>
-                        <ImageBackground style={styles.image} source={ require ('../../assets/portada-default.jpg')}>
-                            <LinearGradient colors={['transparent', 'black']} style={styles.linearGradient}>
-                            <Text style={styles.name}>Texto 1</Text>
-                            <Text style={styles.name}>Texto 2</Text>
-                            <Text style={styles.name}>Texto 3</Text>
-                            <Text style={{
+                        <Text style={{
                                 color: 'white',
                                 fontSize: 12,
                                 backgroundColor: 'transparent',
-                                opacity: 0.75,
-                            }}>Tap to view more</Text>
-                            </LinearGradient>
-                        </ImageBackground>
-                    </View>
-                </View>
-            
+                                opacity: 0.90,
+                                padding: 5
+                            }}>{ eventPlace ? eventPlace : 'Location' }</Text>
+                    </LinearGradient>
+                </ImageBackground>
+            </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    eventBox: {
-    },
-    image: {
+    eventImage: {
         flex: 1,
         resizeMode: 'cover',
       },
-      container2: {
+      eventBox: {
         flex: 1,
         borderRadius: 4,
         backgroundColor: 'blue',
@@ -83,7 +70,11 @@ const styles = StyleSheet.create({
         height: 200,
         overflow: 'hidden',
       },
-      name: {
+      eventInfo: {
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+      },
+      eventTitle: {
         color: 'white',
         fontFamily: 'Avenir-Heavy',
         fontSize: 16,
@@ -91,49 +82,28 @@ const styles = StyleSheet.create({
       },
       linearGradient: {
         flex: 1,
-        padding: 12,
+        padding: 14,
         flexDirection: 'column',
         justifyContent: 'flex-end',
       },
-    eventImageContainer: {
-        width: 400,
-        height: 200,
-        justifyContent: 'flex-end',
-        alignItems: 'flex-start'
-    },
-    eventInfoContainer: {
-        padding: 5, 
-        bottom: 0, 
-        marginVertical: 8, 
-        marginHorizontal: 8,
-        zIndex: 9990,
-        backgroundColor: 'black',
-        opacity: 0.7
-    },
-    eventTexts: {
-        color: 'white',
-        padding: 2,
-        fontFamily: 'System',
-        fontWeight: 'bold',
-        marginBottom: 1,
-        borderRadius: 10,
-        marginHorizontal: 8,
-        zIndex: 9999
-    },
-    eventCreator: {
-        width: 400,
-        height: 50,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#f1f2f6'
-    },
-    eventPlace: {
-    },
-    eventCreatorImage: {
-        marginLeft: 5,
-        width: 50, 
-        height: 50,
-        borderWidth: 5,
-        borderRadius: 25
-    }
+      eventDate: {
+          alignItems: 'flex-end',
+          color: 'white',
+          marginHorizontal: '2%',
+      }
   });
+
+  function formatDate (date) {
+    var monthNames = [
+      "JAN", "FEB", "MAR",
+      "APR", "MAY", "JUN", "JUL",
+      "AUG", "SEP", "OCT",
+      "NOV", "DEC"
+    ];
+  
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+  
+    return monthNames[monthIndex];
+  }
